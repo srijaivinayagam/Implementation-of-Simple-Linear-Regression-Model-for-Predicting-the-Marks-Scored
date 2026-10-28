@@ -8,23 +8,92 @@ To write a program to predict the marks scored by a student using the simple lin
 2. Anaconda – Python 3.7 Installation / Jupyter notebook
 
 ## Algorithm
-1. 
-2. 
-3. 
-4. 
-
+```
+1. Load the dataset into a DataFrame and explore its contents to understand the data structure.
+2.Separate the dataset into independent (X) and dependent (Y) variables, and split them into training and testing sets.
+3.Create a linear regression model and fit it using the training data.
+4.Predict the results for the testing set and plot the training and testing sets with fitted lines.
+5.Calculate error metrics (MSE, MAE, RMSE) to evaluate the model’s performance.
+```
 ## Program:
 ```
 /*
 Program to implement the simple linear regression model for predicting the marks scored.
-Developed by: 
-RegisterNumber:  
+Developed by: SRIJAI.V
+RegisterNumber: 212225040426
 */
 ```
+```
+import pandas as pd
+import numpy as np 
+import matplotlib.pyplot as plt
+from sklearn.metrics import mean_absolute_error, mean_squared_error
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
 
+import pandas as pd
+df = pd.read_csv(r"C:\Users\admin\Downloads\exp_2_dataset_student_scores.csv")
+print("First 5 rows:\n", df.head(), "\n")
+print("Last 5 rows:\n", df.tail(), "\n")
+print("Developed by Deetchana S")
+
+X = df.iloc[:, :-1].values   
+Y = df.iloc[:, -1].values    
+print("X (features):", X.flatten())
+print("Y (targets):", Y)
+
+X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=1/3, random_state=0)
+print("\nTraining samples:", len(X_train), " Testing samples:", len(X_test))
+
+regressor = LinearRegression()
+regressor.fit(X_train, Y_train)
+
+Y_pred = regressor.predict(X_test)
+print("\nPredicted values:", np.round(Y_pred, 2))
+print("Actual values   :", Y_test)
+
+plt.figure(figsize=(6,4))
+plt.scatter(X_train, Y_train, color="orange", label="Training data")
+plt.plot(X_train, regressor.predict(X_train), color="red", label="Fitted line")
+plt.title("Hours vs Scores (Training set)")
+plt.xlabel("Hours")
+plt.ylabel("Scores")
+plt.legend()
+plt.grid(True)
+plt.show()
+
+order = np.argsort(X_test.flatten())
+X_test_sorted = X_test.flatten()[order]
+Y_test_sorted = Y_test[order]
+Y_pred_sorted = Y_pred[order]
+plt.figure(figsize=(6,4))
+plt.scatter(X_test, Y_test, color="blue", label="Test data")
+plt.plot(X_test_sorted, Y_pred_sorted, color="green", label="Predictions")
+plt.title("Hours vs Scores (Testing set)")
+plt.xlabel("Hours")
+plt.ylabel("Scores")
+plt.legend()
+plt.grid(True)
+plt.show()
+
+mae = mean_absolute_error(Y_test, Y_pred)
+mse = mean_squared_error(Y_test, Y_pred)
+rmse = np.sqrt(mse)
+print("\nMean Absolute Error (MAE):", mae)
+print("Mean Squared Error (MSE):", mse)
+print("Root Mean Squared Error (RMSE):", rmse)
+
+new_hours = np.array([[2.5], [8.0]])   
+pred_new = regressor.predict(new_hours)
+print("\nPredictions for new hours", new_hours.flatten(), "=>", np.round(pred_new,2))
+```
 ## Output:
-![simple linear regression model for predicting the marks scored](sam.png)
-
+<img width="273" height="393" alt="image" src="https://github.com/user-attachments/assets/aa61f2c3-3589-4ab9-95ea-7284b78c34d2" />
+<img width="993" height="106" alt="image" src="https://github.com/user-attachments/assets/8af51280-4ecf-4b93-b61a-a06274c0a3fc" />
+<img width="757" height="77" alt="image" src="https://github.com/user-attachments/assets/c703bae8-b47c-4a98-aa59-b21354aad736" />
+<img width="805" height="507" alt="image" src="https://github.com/user-attachments/assets/090adfd9-d497-42a6-82c6-4f31b9884535" />
+<img width="721" height="490" alt="image" src="https://github.com/user-attachments/assets/d6561164-9ac0-4ff3-8933-20a161a32016" />
+<img width="541" height="87" alt="image" src="https://github.com/user-attachments/assets/cfaf0a3f-0662-4ef1-85c6-9b11f068f368" />
 
 ## Result:
 Thus the program to implement the simple linear regression model for predicting the marks scored is written and verified using python programming.
